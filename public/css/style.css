@@ -1,0 +1,136 @@
+:root {
+    --main-bg: rgb(24, 25, 29);
+    --card-bg: rgb(34, 36, 40);
+}
+
+body {
+    background-color: rgb(30, 30, 30);
+    margin: 0px;
+    padding: 0px;
+}
+
+main {
+    padding: 10px;
+}
+
+h1, h2, h3, li {
+    color: white;
+}
+
+nav {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    height: 50px;
+    background-color: transparent;
+    position: relative;
+}
+
+nav::before {
+    content: "";
+    position: absolute;
+    width: 98%;
+    height: 3px;
+    top: 50px;
+    left: 1%;
+    background-color: white;
+}
+
+nav > a {
+    padding: 0px;
+    margin: 0px;
+    height: inherit;
+}
+
+.nav-button {
+    font-size: 30px;
+    color: white;
+
+    margin: 0px;
+    padding: 0px;
+    padding-left: 30px;
+    padding-right: 30px;
+    /* height: 100px; */
+
+    display: flex;
+    align-items: center;
+    height: inherit;
+}
+
+.nav-button:hover {
+    color: lightgray;
+    background-color: rgb(60, 60, 60);
+}
+
+.nav-button > p {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+.right {
+    position: absolute;
+    right: 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    height: inherit;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.right > a {
+    padding: 0px;
+    margin: 0px;
+    height: inherit;
+}
+
+.card {
+    height: fit-content;
+    border-radius: 24px;
+    background-color: var(--card-bg);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.8);
+    padding: 8px 16px 0 16px;
+    position: relative;
+    overflow: hidden;
+    height: fit-content;
+    color: white;
+    margin: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    flex: none;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.text-input {
+    border-radius: 10px;
+    border-color: rbg(30, 30, 30);
+    height: 25px;
+    padding: 3px;
+    background-color: rgb(40, 40, 40);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.8);
+    margin: 10px;
+    color: rgb(170, 170, 170)
+}
+
+.submit-input {
+    border-radius: 10px;
+    border-color: rbg(30, 30, 30);
+    height: 25px;
+    padding: 3px;
+    background-color: rgb(40, 40, 40);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.8);
+    margin: 10px;
+    color: rgb(170, 170, 170);
+    position: relative;
+}

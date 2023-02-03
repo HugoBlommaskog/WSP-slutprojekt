@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+html lang="en"
+    head
+        meta charset="UTF-8"/
+        meta name="viewport" content="width=device-width, initial-scale=1.0"/
+        meta http-equiv="X-UA-Compatible" content="ie=edge"/
+        title Document
+        link rel="stylesheet" href="/css/style.css"
+    body
+    nav
+        a href = "/"
+            div.nav-button
+                p Home
+        - if session[:user_id] != nil
+          a href="/new-post"
+            h2 Logged in as #{session[:username]}
+                p New post
+        a href = "/Search"
+            div.nav-button
+                p Search
+        
+        - if session[:user_id] == nil 
+            .right 
+                a href="/users/login"
+                    .nav-button
+                        p Login
+                a href="/users/register"
+                    .nav-button
+                        p Register
+        - else 
+            .right 
+                p Logged in as #{session[:username]}
+
+        
+    ==yield

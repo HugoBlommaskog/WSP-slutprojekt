@@ -1,0 +1,5 @@
+[0118/130142.253:ERROR:registration_protocol_win.cc(107)] CreateFile: Det går inte att hitta filen. (0x2)
+[0203/145641.107:ERROR:registration_protocol_win.cc(107)] CreateFile: Det går inte att hitta filen. (0x2)
+[0203/153142.003:ERROR:registration_protocol_win.cc(107)] CreateFile: Det går inte att hitta filen. (0x2)
+[0203/160943.301:ERROR:registration_protocol_win.cc(107)] CreateFile: Det går inte att hitta filen. (0x2)
+[0203/160944.391:ERROR:registration_protocol_win.cc(107)] CreateFile: Det går inte att hitta filen. (0x2)
