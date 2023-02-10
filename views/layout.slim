@@ -13,7 +13,7 @@ html lang="en"
                 p Home
         - if session[:user_id] != nil
           a href="/new-post"
-            h2 Logged in as #{session[:username]}
+            .nav-button
                 p New post
         a href = "/Search"
             div.nav-button
@@ -28,8 +28,12 @@ html lang="en"
                     .nav-button
                         p Register
         - else 
-            .right 
-                p Logged in as #{session[:username]}
+            .right
+                .label
+                    p Logged in as #{session[:username]}
+                a href="/users/logout"
+                    .nav-button
+                        p Log out
 
         
     ==yield

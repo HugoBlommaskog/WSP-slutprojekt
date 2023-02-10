@@ -1,4 +1,4 @@
-require_relative('models.rb')
+require_relative('../models.rb')
 require_relative('../utils.rb')
 
 # Create
@@ -15,7 +15,22 @@ end
 
 # Create a new user
 post('/users') do
-    # Wohoo
+    username = params[:username]
+    password = params[:password]
+    
+    puts "Creating user with username '#{username}' and password '#{password}'"
+
+    created_user = register(username, password)
+
+    if (created_user != nil)
+        # Successfully created a new user
+        session[:user_id] = created_user["user_id"]
+        session[:username] = created_user["username"]
+        redirect('/')
+    else
+        # Something went wrong
+        return "Something went wrong"
+    end
 end
 
 # Read
@@ -30,6 +45,14 @@ post('/users/login') do
     puts "TRYING TO LOG IN"
     redirect('/')
 end
+
+# Logs a user out. This shouldn't be a GET method smh
+get('/users/logout') do
+    session[:user_id] = nil
+    session[:username] = nil
+    
+    slim(:home)
+end 
 
 #Update a user's profile (only username, right?)
 post('/users/:user_id') do

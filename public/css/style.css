@@ -24,6 +24,7 @@ nav {
     height: 50px;
     background-color: transparent;
     position: relative;
+    color: lightgray;
 }
 
 nav::before {
@@ -85,6 +86,12 @@ a:link {
 }
 
 .right > a {
+    padding: 0px;
+    margin: 0px;
+    height: inherit;
+}
+
+.right > label {
     padding: 0px;
     margin: 0px;
     height: inherit;

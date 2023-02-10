@@ -9,9 +9,6 @@ require_relative('endpoints/users')
 
 enable(:sessions)
 
-db = SQLite3::Database.new("db/database2.db")
-db.results_as_hash = true
-
 get('/') do
     # Get profiles that the user is subscribed to,
     # then join those profiles by posts about any of those profiles
