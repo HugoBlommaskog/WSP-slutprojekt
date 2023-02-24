@@ -1,0 +1,9 @@
+center
+    h2 Are you sure you want to log out?
+
+div.card
+    form action='/users/logout' method='post'
+        input type='submit' name='submit' value="YES" class='submit-input'
+
+    form action='/' method='get'
+        input type='submit' name='submit' value="NO" class='submit-input'

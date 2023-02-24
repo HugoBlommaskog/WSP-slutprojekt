@@ -1,0 +1,9 @@
+- if locals[:maybe_name_search] != nil 
+    h2 Profiles matching "#{locals[:maybe_name_search]}"
+- else 
+    h2 Profiles 
+
+- for profile in profiles
+    a href="/profiles/#{profile["profile_id"]}"
+                    .card
+                        p #{profile["name"]}

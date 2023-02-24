@@ -1,0 +1,11 @@
+center
+    h2 Create post
+
+div.card
+    form action='/posts' method='post'
+        input type='text' name='message' placeholder='Message' class='text-input'
+        br
+        select name="profile_id"
+            - for profile in locals[:profiles]
+                option value="#{profile["profile_id"]}" #{profile["name"]}
+        input type='submit' name='submit' value="Create post" class='submit-input'

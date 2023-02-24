@@ -12,10 +12,10 @@ html lang="en"
             div.nav-button
                 p Home
         - if session[:user_id] != nil
-          a href="/new-post"
+          a href="/posts/create"
             .nav-button
                 p New post
-        a href = "/Search"
+        a href = "/profiles/search"
             div.nav-button
                 p Search
         
@@ -34,6 +34,10 @@ html lang="en"
                 a href="/users/logout"
                     .nav-button
                         p Log out
+        - if session[:username] == 'Admin'
+            a href="/profiles/create"
+                .nav-button
+                    p New profile
 
         
     ==yield

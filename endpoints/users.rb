@@ -8,11 +8,6 @@ get('/users/register') do
     slim(:register)
 end
 
-# Retrieve the page for logging in
-get('/users/login') do
-    slim(:login)
-end
-
 # Create a new user
 post('/users') do
     username = params[:username]
@@ -35,19 +30,44 @@ end
 
 # Read
 
+# Update
+
+# Retrieve the page for logging in
+get('/users/login') do
+    puts "RETRIEVING PAGE FOR LOGGING IN"
+    slim(:login)
+end
+
+# Retrieve the page for logging out
+get('/users/logout') do
+    slim(:logout)
+end
+
 # Retrieve a user's profile
+# This should be under read, but /:user_id has to be declared after /login and /logout
 get('/users/:user_id') do
     #
 end
 
-# Update
+# Logs a user in
 post('/users/login') do
     puts "TRYING TO LOG IN"
+
+    username = params[:username]
+    password = params[:password]
+
+    logged_in_user = login(username, password)
+
+    if (logged_in_user != nil)
+        session[:user_id] = logged_in_user["user_id"]
+        session[:username] = logged_in_user["username"]
+    end
+
     redirect('/')
 end
 
-# Logs a user out. This shouldn't be a GET method smh
-get('/users/logout') do
+# Logs a user out
+post('/users/logout') do
     session[:user_id] = nil
     session[:username] = nil
     
