@@ -56,11 +56,15 @@ get('/profiles/:profile_id') do
         redirect('/')
     end
 
-    slim(:profile, locals:{profile_name: maybe_profile["name"], profile_id: maybe_profile["profile_id"]})
+    profile = maybe_profile
+
+    posts = get_posts_about_profile(profile["profile_id"])
+    $profile_id = maybe_profile["profile_id"]
+    slim(:profile, locals:{profile_name: maybe_profile["name"], profile_id: maybe_profile["profile_id"], posts: posts})
 end
 
 # Subscribe to a profile
-post('/profiles/:profile_id/subscribe') do
+post('/subscriptions') do
     # Get user from session
     # Check if user is subscribed - if so, return
     # Subscribe

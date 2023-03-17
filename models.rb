@@ -121,3 +121,15 @@ def create_post(user_id, profile_id, message)
     
     puts "Created post with ID #{created_post_id}"
 end
+
+def get_posts_about_profile(profile_id)
+    puts "Retrieving posts about profile with ID #{profile_id}"
+    db = get_db()
+    posts = db.execute(
+        "SELECT * FROM posts
+            INNER JOIN users ON posts.user_id = users.user_id
+            WHERE posts.profile_id = ?",
+        profile_id)
+    
+    return posts
+end
