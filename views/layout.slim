@@ -24,56 +24,52 @@ html lang="en"
                 -if session[:user_id] != nil
                     a.nav-button href="/posts/create"
                         .icon
-                            ion-icon name="add-circle-outline"
+                            ion-icon name="create-outline"
                         .title
                             span New post
-
-            / a href = "/"
-            /     div.nav-button
-            /         .nav-icon
-
-            /         p Home
-            / - if session[:user_id] != nil
-            /   a href="/posts/create"
-            /     .nav-button
-            /         p New post
-            / a href = "/profiles/search"
-            /     div.nav-button
-            /         p Search
-            
             - if session[:user_id] == nil 
                 .right
-                    .account-info
-                        a.nav-button.left href="/users/login"
-                            p Login
-                        a.nav-button.right href="/users/register"
-                            p Register
-
-                / .right 
-                /     a href="/users/login"
-                /         .nav-button
-                /             p Login
-                /     a href="/users/register"
-                /         .nav-button
-                /             p Register
+                    a.nav-button href="/users/login"
+                        .icon
+                            ion-icon name="log-in-outline"
+                        .title
+                            span Log in
+                    a.nav-button href="/users/register"
+                        .icon
+                            ion-icon name="person-add-outline"
+                        .title
+                            span Register
             - else 
                 .right
                     .label
                         p Logged in as #{session[:username]}
-                    a href="/users/logout"
-                        .nav-button
-                            p Log out
+                    a.nav-button href="/users/logout"
+                        .icon
+                            ion-icon name="walk-outline"
+                        .title
+                            span Log out
+                    / a href="/users/logout"
+                    /     .nav-button
+                    /         p Log out
             - if session[:username] == 'Admin'
-                a href="/profiles/create"
-                    .nav-button
-                        p New profile
+                a.nav-button href="/profiles/create"
+                        .icon
+                            ion-icon name="accessibility-outline"
+                        .title
+                            span New profile
 
         main
-            -if locals[:profile_id] != nil
-                form = action="/subscriptions?profile_id=#{$profile_id}" method='post'
+            -if session[:user_id] != nil && locals[:profile_id] != nil && !locals[:user_subscribed]
+                form action='/subscriptions' method='post'
+                    input type='hidden' name='profile_id' value='#{locals[:profile_id]}'
                     input.sub-button type='submit' name='submit' value="Subscribe" class='submit-input'
                 
+            -if session[:user_id] != nil && locals[:profile_id] != nil && locals[:user_subscribed]
+                form action='/subscriptions/delete' method='post'
+                    input type='hidden' name='profile_id' value='#{locals[:profile_id]}'
+                    input.sub-button type='submit' name='submit' value="Unsubscribe" class='submit-input'
 
             ==yield
         script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+        script src="script.js"

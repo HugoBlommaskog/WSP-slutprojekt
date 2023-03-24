@@ -24,3 +24,27 @@ post('/posts') do
 
     redirect('/')
 end
+
+post('/posts/:post_id/likes') do
+    user_id = session[:user_id]
+
+    if (user_id == nil)
+        redirect('/')
+    end
+
+    post_id = params[:post_id]
+
+    create_like(user_id, post_id)
+end
+
+delete('/posts/:post_id/likes') do
+    user_id = session[:user_id]
+
+    if (user_id == nil)
+        redirect('/')
+    end
+
+    post_id = params[:post_id]
+
+    create_like(user_id, post_id)
+end

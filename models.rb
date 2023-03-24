@@ -133,3 +133,66 @@ def get_posts_about_profile(profile_id)
     
     return posts
 end
+
+def create_subscription(user_id, profile_id)
+    db = get_db()
+    db.execute(
+        "INSERT INTO subscriptions (user_id, profile_id) VALUES (?, ?)",
+        user_id,
+        profile_id)
+
+    created_subscription_id = db.last_insert_row_id()
+
+    return created_subscription_id
+end
+
+def is_user_subscribed(user_id, profile_id)
+    return !get_db()
+        .execute(
+            "SELECT 1 FROM subscriptions
+                WHERE user_id = ? AND profile_id = ?",
+            user_id, profile_id).empty?
+end
+
+def delete_subscription(user_id, profile_id)
+    get_db()
+        .execute(
+            "DELETE FROM subscriptions
+                WHERE user_id = ? AND profile_id = ?",
+            user_id,
+            profile_id)
+end
+
+def get_user_subscribed_posts(user_id)
+    return get_db()
+        .execute(
+            "SELECT * from posts
+                INNER JOIN subscriptions ON posts.profile_id = subscriptions.profile_id
+                INNER JOIN profiles ON posts.profile_id = profiles.profile_id
+                INNER JOIN users ON posts.user_id = users.user_id
+                WHERE subscriptions.user_id = ?
+                ORDER BY posts.post_id DESC",
+            user_id
+        )
+end
+
+def create_like(user_id, post_id)
+    get_db()
+        .execute(
+            "INSERT INTO likes (user_id, post_id) VALUES (?, ?)",
+            user_id,
+            post_id)
+end
+
+def delete_like(user_id, post_id)
+
+end
+
+def is_valid_user(user_id)
+    return !get_db()
+        .execute(
+            "SELECT 1 FROM users
+                WHERE user_id = ?
+                    AND username = 'Admin'",
+            user_id).empty?
+end

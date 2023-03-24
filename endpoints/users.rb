@@ -71,7 +71,7 @@ post('/users/logout') do
     session[:user_id] = nil
     session[:username] = nil
     
-    slim(:home)
+    redirect('/')
 end 
 
 #Update a user's profile (only username, right?)
