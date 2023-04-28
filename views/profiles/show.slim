@@ -1,0 +1,16 @@
+- if session[:username] == 'Admin'
+    - if locals[:profile_active] == 1
+        form action='/profiles/#{locals[:profile_id]}/deactivate' method='post'
+            input.activate-button type='submit' name='submit' value="Deactivate" class='submit-input'
+    - else
+        form action='/profiles/#{locals[:profile_id]}/activate' method='post'
+            input.activate-button type='submit' name='submit' value="Activate" class='submit-input'
+center
+    h1 #{locals[:profile_name]}
+
+- for post in locals[:posts]
+    - @post = post
+    == slim :"posts/show"
+    / .card.post-card
+    /     h2.username-on-post #{post["username"]} wrote:
+    /     p #{post["message"]}

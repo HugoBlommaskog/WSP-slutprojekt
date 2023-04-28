@@ -221,10 +221,68 @@ a:link {
     flex-direction: column;
 }
 
+.profile-name-on-post {
+    padding: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 10px;
+    margin-right: auto;
+    justify-content: center;
+}
+
+h2.profile-name-on-post > a {
+    color: black;
+}
+
 .username-on-post {
     padding: 0px;
     margin-left: 10px;
     margin-right: auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    font-size: 15px;
+    color: gray;
+}
+
+.post-header {
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    margin-right: auto;
+    justify-content: center;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+}
+
+.message {
+    font-size: 20px;
+}
+
+.like-thing {
+    padding: 0px;
+    margin-right: 10px;
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: min-content;
+}
+
+.heart-button {
+    margin-right: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+p.count {
     margin-top: 0px;
     margin-bottom: 0px;
 }
@@ -289,4 +347,22 @@ a:link {
     font-size: 30px;
     height: fit-content;
     color: white;
+}
+
+.activate-button {
+    background-color: gray;
+    font-size: 30px;
+    height: fit-content;
+    color: white;
+}
+
+.delete-button {
+    background-color: red;
+    font-size: 30px;
+    height: fit-content;
+    color: white;
+}
+
+.hidden {
+    display: none;
 }

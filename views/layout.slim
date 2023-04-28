@@ -22,7 +22,7 @@ html lang="en"
                             span Search
                 
                 -if session[:user_id] != nil
-                    a.nav-button href="/posts/create"
+                    a.nav-button href="/posts/new"
                         .icon
                             ion-icon name="create-outline"
                         .title
@@ -34,7 +34,7 @@ html lang="en"
                             ion-icon name="log-in-outline"
                         .title
                             span Log in
-                    a.nav-button href="/users/register"
+                    a.nav-button href="/users/new"
                         .icon
                             ion-icon name="person-add-outline"
                         .title
@@ -52,7 +52,7 @@ html lang="en"
                     /     .nav-button
                     /         p Log out
             - if session[:username] == 'Admin'
-                a.nav-button href="/profiles/create"
+                a.nav-button href="/profiles/new"
                         .icon
                             ion-icon name="accessibility-outline"
                         .title

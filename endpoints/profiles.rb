@@ -1,103 +1,126 @@
-require_relative('../utils.rb')
+require_relative('../models.rb')
 
-# Create
+include(Models)
 
-# Retrieve the page for creating a profile
-get('/profiles/create') do
-    slim(:'create-profile')
+# Returns a page for creating a profile
+get('/profiles/new') do
+    slim(:'profiles/new')
 end
 
-# Create a new profile
+# Creates a new profile (admin only)
+#
+# @param [String] name, The name of the new profile
 post('/profiles') do
     profile_name = params[:name]
-
     maybe_user_id = session[:user_id]
-    
+
+    if (!is_valid_admin(maybe_user_id))
+        # This endpoint requires a signed-in admin
+        puts "ERROR: Failed to create profile - no admin signed in"
+        redirect("/")
+    end
 
     maybe_new_profile = create_profile(profile_name)
 
-    if maybe_new_profile == nil
-        # Error creating profile (duplicate I suppose)
-        puts ("Error creating profile [#{profile_name}]")
+    if (maybe_new_profile == nil)
+        # Error creating profile
+        puts ("ERROR: Failed to create profile[#{profile_name}]")
         redirect('/')
     end
 
     redirect("/profiles/#{maybe_new_profile["profile_id"]}")
 end
 
-# Read
-
-# Retrieve the page for searching for profiles
+# Returns a page for searching for profiles
 get('/profiles/search') do
-    slim(:search_profiles)
+    slim(:'profiles/search')
 end
 
-# Retrieve all profiles, potential name search
+# Returns all profiles
+#
+# @param [String] name_search, The (optional) prefix to search by
 get('/profiles') do
     puts "GET /profiles"
     maybe_name_search = params[:name_search]
-    puts maybe_name_search
 
-    if maybe_name_search == nil
+    if (maybe_name_search == nil)
         # Not searching, just listing all
         profiles = get_all_profiles()
     else
         # Searching with a prefix
-        profiles = search_profiles(maybe_name_search)
+        profiles = search_profiles(maybe_name_search, session[:user_id])
     end
 
-    slim(:profiles, locals:{profiles: profiles, maybe_name_search: maybe_name_search})
+    slim(:'profiles/index', locals:{profiles: profiles, maybe_name_search: maybe_name_search})
 end
 
-# Retrieve information about a profile
+# Returns information about a given profile
+#
+# @param [Integer] :profile_id, The ID of the profile
 get('/profiles/:profile_id') do
     puts "Trying to retrieve profile"
-    maybe_profile = get_profile(params[:profile_id])
+    maybe_user_id = session[:user_id]
+    profile_id = params[:profile_id]
+    maybe_profile = get_profile(profile_id, maybe_user_id)
 
     if maybe_profile == nil
         # Bad ID
+        puts "ERROR: Failed to find profile with ID #{profile_id}"
         redirect('/')
     end
 
     profile = maybe_profile
+    profile_id = profile["profile_id"]
 
-    user_subscribed = session[:user_id] != nil ? is_user_subscribed(session[:user_id], profile["profile_id"]) : false
-    puts "User subscribed: #{user_subscribed}"
+    user_subscribed = maybe_user_id != nil ? is_user_subscribed(maybe_user_id, profile_id) : false
     posts = get_posts_about_profile(profile["profile_id"])
-    $profile_id = maybe_profile["profile_id"]
-    slim(:profile, locals:{profile_name: maybe_profile["name"], profile_id: maybe_profile["profile_id"], posts: posts, user_subscribed: user_subscribed})
+
+    user_liked_post_ids = !posts.empty? ? get_user_liked_post_ids(maybe_user_id) : []
+
+    for post in posts
+        post_id = post["post_id"]
+        user_liked = user_liked_post_ids.any?{|user_liked_post_id| user_liked_post_id["post_id"] == post_id}
+        post["user_liked"] = user_liked
+    end
+
+    $profile_id = profile_id
+    slim(:'profiles/show', locals:{profile_name: profile["name"], profile_id: profile_id, profile_active: maybe_profile["active"], posts: posts, user_subscribed: user_subscribed})
 end
 
-# Subscribe to a profile
-post('/subscriptions') do
-    puts "POST /subscriptions"
+# Activates a given profile
+#
+# @param [Integer] :profile_id, The ID of the profile to activate
+post('/profiles/:profile_id/activate') do
+    maybe_user_id = session[:user_id]
+
+    if (!is_valid_admin(maybe_user_id))
+        puts "ERROR: Failed to activate profile - no admin signed in"
+        redirect('/')
+    end
+
     profile_id = params[:profile_id]
-    puts "Subscribing to profile #{profile_id}"
-    # Get user from session
-    # Check if user is subscribed - if so, return
-    # Subscribe
+    activate_profile(profile_id)
 
-    created_subscription_id = create_subscription(session[:user_id], profile_id)
-
-    puts "Created subscription with ID #{created_subscription_id}"
-
-    p is_user_subscribed(session[:user_id], profile_id)
+    puts "LOG: Profile[#{profile_id}] has been activated"
 
     redirect("/profiles/#{profile_id}")
 end
 
-post('/subscriptions/delete') do
-    puts "Deleting subscription"
-    profile_id = params[:profile_id]
+# Deactivates a given profile
+#
+# @param [Integer] :profile_id, The ID of the profile to deactivate
+post('/profiles/:profile_id/deactivate') do
+    maybe_user_id = session[:user_id]
 
-    delete_subscription(session[:user_id], profile_id)
+    if (!is_valid_admin(maybe_user_id))
+        puts "ERROR: Failed to deactivate profile - no admin signed in"
+        redirect('/')
+    end
+
+    profile_id = params[:profile_id]
+    deactivate_profile(profile_id)
+
+    puts "LOG: Profile[#{profile_id}] has been activated"
 
     redirect("/profiles/#{profile_id}")
-end
-
-# Admin
-
-# Create a profile (admin?)
-post('/profiles') do
-    # Check if profile exists by name - if so, 400 bad request
 end

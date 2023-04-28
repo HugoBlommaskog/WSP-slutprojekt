@@ -1,0 +1,9 @@
+- for post in locals[:posts]
+    - @post = post
+    == slim :"posts/show"
+
+- if locals[:posts].empty?
+    - if session[:user_id] == nil 
+        h2 Log in to see posts from selected profiles
+    -else
+        h2 No posts from selected profiles

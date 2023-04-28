@@ -1,0 +1,23 @@
+.card.post-card
+        .post-header
+            img.profile-picture src="img/stickman.png"
+            h2.profile-name-on-post 
+                a href="/profiles/#{@post["profile_id"]}" #{@post["profile_name"]}
+        .username-on-post
+            p By #{@post["username"]}
+        p.message #{@post["message"]}
+        - if(session[:user_id] == @post["author_id"]) # Show delete button if the user created the post
+            form action='/posts/#{@post["post_id"]}/delete' method='post'
+                input.delete type='submit' name='submit' value="Delete" class='submit-input'
+        .like-thing id=@post["post_id"]
+            - if @post["user_liked"]
+                .heart-button.unliked.hidden
+                    ion-icon.outline name="heart-outline" onclick="likePost('0', #{@post["post_id"]})"
+                .heart-button.liked
+                    ion-icon.filled name="heart" onclick="unlikePost('0', #{@post["post_id"]})"
+            - else
+                .heart-button.unliked
+                    ion-icon.outline name="heart-outline" onclick="likePost('0', #{@post["post_id"]})"
+                .heart-button.liked.hidden
+                    ion-icon.filled name="heart" onclick="unlikePost('0', #{@post["post_id"]})"
+            p.count #{@post["like_count"]}
