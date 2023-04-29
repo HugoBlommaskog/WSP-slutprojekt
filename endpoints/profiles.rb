@@ -1,6 +1,6 @@
 require_relative('../models.rb')
 
-include(Models)
+include(Model)
 
 # Returns a page for creating a profile
 get('/profiles/new') do

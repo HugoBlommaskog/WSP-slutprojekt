@@ -87,7 +87,7 @@ nav > .right {
     align-items: center;
 }
 
-/* nav .right .account-info {
+nav .right .account-info {
     /* position: relative; */
     margin-right: 10px;
     margin-left: 0px;
@@ -98,9 +98,9 @@ nav > .right {
 
     display: flex;
     flex-direction: row;
-} */
+}
 
-/* nav .right .account-info .nav-button {
+nav .right .account-info .nav-button {
     height: 100%;
     /* margin-top: 5px; */
     /* margin-bottom: 5px; */
@@ -109,35 +109,35 @@ nav > .right {
     padding-right: 15px;
     box-sizing: border-box;
     transition-duration: 0.4s;
-} */
+}
 
-/* nav .right .account-info .nav-button:hover {
+nav .right .account-info .nav-button:hover {
     background-color: rgb(60, 60, 60);
     color: white;
     transition-duration: 0.4s;
-} */
+}
 
-/* nav .right .account-info .nav-button {
+nav .right .account-info .nav-button {
     /* border-top: 2px solid gray; */
     /* border-bottom: 2px solid gray; */
     background-color: rgb(230, 230, 230)
-} */
+}
 
-/* nav .right .account-info .nav-button.left {
+nav .right .account-info .nav-button.left {
     width: auto;
     /* background-color: red; */
     /* border-left: 2px solid gray; */
     border-bottom-left-radius: 20px;
     border-top-left-radius: 20px;
-} */
+}
 
-/* nav .right .account-info .nav-button.right {
+nav .right .account-info .nav-button.right {
     width: auto;
     /* background-color: blue; */
     /* border-right: 2px solid gray; */
     border-bottom-right-radius: 20px;
     border-top-right-radius: 20px;
-} */
+}
 
 .nav-button > p {
     margin-top: auto;
@@ -175,7 +175,7 @@ a:link {
     margin-left: auto;
     margin-right: auto;
     flex: none;
-    width: 400px;
+    width: 500px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -183,7 +183,7 @@ a:link {
     padding-bottom: 20px;
 }
 
-.card::after {
+/* .card::after {
     content: "";
     position: absolute;
     top: 0;
@@ -191,7 +191,7 @@ a:link {
     width: 100%;
     height: 12px;
     background: var(--blue-bg);
-}
+} */
 
 .text-input {
     border-radius: 10px;
@@ -243,6 +243,16 @@ h2.profile-name-on-post > a {
 
     font-size: 15px;
     color: gray;
+    word-break: break-all;
+}
+
+.username-on-post > p {
+    padding: 0px;
+    margin: 0px;
+    margin-top: 10px;
+
+    font-size: 15px;
+    color: gray;
 }
 
 .post-header {
@@ -250,18 +260,38 @@ h2.profile-name-on-post > a {
     flex-direction: row;
     margin-left: 10px;
     margin-right: auto;
+    align-items: left;
     justify-content: center;
+    position: relative;
+    /* width: 100%; */
+    padding: 0px;
+}
+
+.post-names {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: left;
+    /* position: absolute;
+    left: 60px; */
 }
 
 .profile-picture {
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 60px;
+    height: 60px;
     align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    /* position: absolute;
+    left: 0px; */
 }
 
 .message {
     font-size: 20px;
+    width: min(min-content, 100%);
+    /* overflow: auto; */
+    word-break: break-all;
 }
 
 .like-thing {
@@ -363,6 +393,37 @@ p.count {
     color: white;
 }
 
+.delete-post-form {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    margin-right: 0px;
+}
+
+.delete-post {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    border-color: transparent;
+    font-size: 25px;
+}
+
+.delete-post:hover {
+    background-color: rgb(210, 210, 210);
+    cursor: pointer;
+}
+
 .hidden {
     display: none;
+}
+
+footer {
+    position: absolute;
+    bottom: 0px;
+    padding-left: 20px;
+}
+
+.notice {
+    color: red;   
 }

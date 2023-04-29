@@ -5,6 +5,7 @@ require('bcrypt')
 
 require_relative('endpoints/posts')
 require_relative('endpoints/profiles')
+require_relative('endpoints/subscriptions')
 require_relative('endpoints/users')
 
 enable(:sessions)

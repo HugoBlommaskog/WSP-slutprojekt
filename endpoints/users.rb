@@ -1,10 +1,10 @@
 require_relative('../models.rb')
 
-include(Models)
+include(Model)
 
 # Returns a page for creating a new user
 get('/users/new') do
-    slim(:register)
+    slim(:'users/new')
 end
 
 # Creates a new user

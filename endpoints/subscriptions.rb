@@ -1,6 +1,6 @@
 require_relative('../models.rb')
 
-include(Models)
+include(Model)
 
 # Creates a subscription to a given profile for the signed-in user
 #

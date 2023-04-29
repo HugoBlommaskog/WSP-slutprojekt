@@ -1,7 +1,8 @@
 require('sqlite3')
 require('bcrypt')
+require('sinatra/flash')
 
-module Models
+module Model
 
     def get_db()
         db = SQLite3::Database.new("db/database.db")
@@ -30,7 +31,8 @@ module Models
 
         if user == nil
             # No user exists with that username
-            puts ("No user exists with username [#{username}]")
+            puts ("ERROR: No user exists with username [#{username}]")
+            flash[:notice] = "Failed to log in - Invalid username"
             return nil
         end
 
@@ -38,14 +40,16 @@ module Models
 
         if (BCrypt::Password.new(password_digest) != password)
             # Incorrect password
-            puts ("Incorrect password [#{password}] for user [#{username}]")
+            puts ("ERROR: Incorrect password [#{password}] for user [#{username}]")
+            flash[:notice] = "Failed to log in - Incorrect password for username: [#{username}]"
+            sleep(3)
             return nil
         end
 
         return user
     end
 
-    def create_profile(profile_name, user_id)
+    def create_profile(profile_name)
         db = get_db()
         exists_by_name = db.execute(
             "SELECT 1 FROM profiles
@@ -59,7 +63,7 @@ module Models
 
         db.execute(
             "INSERT INTO profiles (name) 
-                VALUES (?)", 
+                VALUES (?)",
             profile_name)
 
         created_profile_id = db.last_insert_row_id()
