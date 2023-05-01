@@ -1,4 +1,4 @@
-require_relative('../models.rb')
+require_relative('../model.rb')
 
 include(Model)
 
@@ -16,15 +16,23 @@ post('/profiles') do
 
     if (!is_valid_admin(maybe_user_id))
         # This endpoint requires a signed-in admin
-        puts "ERROR: Failed to create profile - no admin signed in"
+        puts("ERROR: Failed to create profile - no admin signed in")
         redirect("/")
+    end
+
+    if (profile_exists_by_name(profile_name))
+        error_message = "ERROR: Failed to create profile - profile with name [#{profile_name}] already exists"
+        puts(error_message)
+        flash[:notice] = error_message
+
+        redirect('/profiles/new')
     end
 
     maybe_new_profile = create_profile(profile_name)
 
     if (maybe_new_profile == nil)
-        # Error creating profile
-        puts ("ERROR: Failed to create profile[#{profile_name}]")
+        # Error creating profile (shouldn't happen)
+        puts ("ERROR: Failed to create Profile[#{profile_name}]")
         redirect('/')
     end
 
@@ -63,27 +71,31 @@ get('/profiles/:profile_id') do
     profile_id = params[:profile_id]
     maybe_profile = get_profile(profile_id, maybe_user_id)
 
-    if maybe_profile == nil
+    if (maybe_profile == nil)
         # Bad ID
-        puts "ERROR: Failed to find profile with ID #{profile_id}"
+        error_message = "ERROR: Failed to find profile with ID [#{profile_id}]"
+        puts(error_message)
+        flash[:notice] = error_message
+        
         redirect('/')
     end
 
     profile = maybe_profile
     profile_id = profile["profile_id"]
 
-    user_subscribed = maybe_user_id != nil ? is_user_subscribed(maybe_user_id, profile_id) : false
+    user_subscribed = (maybe_user_id != nil) ? is_user_subscribed(maybe_user_id, profile_id) : false
     posts = get_posts_about_profile(profile["profile_id"])
 
-    user_liked_post_ids = !posts.empty? ? get_user_liked_post_ids(maybe_user_id) : []
+    # No need to find the IDs of user liked posts for filtering if no posts are displayed anyway
+    user_liked_post_ids = (!posts.empty?) ? get_user_liked_post_ids(maybe_user_id) : []
 
+    # Go through every post and find whether it is liked or not
     for post in posts
         post_id = post["post_id"]
         user_liked = user_liked_post_ids.any?{|user_liked_post_id| user_liked_post_id["post_id"] == post_id}
         post["user_liked"] = user_liked
     end
 
-    $profile_id = profile_id
     slim(:'profiles/show', locals:{profile_name: profile["name"], profile_id: profile_id, profile_active: maybe_profile["active"], posts: posts, user_subscribed: user_subscribed})
 end
 

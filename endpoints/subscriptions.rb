@@ -1,4 +1,4 @@
-require_relative('../models.rb')
+require_relative('../model.rb')
 
 include(Model)
 

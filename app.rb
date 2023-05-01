@@ -10,7 +10,7 @@ require_relative('endpoints/users')
 
 enable(:sessions)
 
-include(Models)
+include(Model)
 
 # Display landing page
 #
@@ -29,5 +29,3 @@ get('/') do
 
     slim(:index, locals:{posts: posts})
 end
-
-# Tab in the top for a page 'Subscriptions' where you can CRD subscriptions

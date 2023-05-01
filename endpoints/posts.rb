@@ -1,4 +1,4 @@
-require_relative('../models.rb')
+require_relative('../model.rb')
 
 include(Model)
 
@@ -17,11 +17,9 @@ post('/posts') do
     profile_id = params[:profile_id]
     message = params[:message]
 
-    puts "CREATING POST"
-    puts profile_id
-    puts message
+    created_post_id = create_post(user_id, profile_id, message)
 
-    create_post(user_id, profile_id, message)
+    puts("LOG: Created Post[#{created_post_id}]")
 
     redirect('/')
 end
@@ -49,7 +47,7 @@ delete('/posts/:post_id/likes') do
 
     if (maybe_user_id == nil)
         # User who isn't logged in called this endpoint
-        puts "ERROR: User isn't logged in"
+        puts("ERROR: User isn't logged in")
         redirect('/')
     end
 
@@ -58,7 +56,7 @@ delete('/posts/:post_id/likes') do
     delete_like(maybe_user_id, post_id)
 end
 
-# Remove a post
+# Removes a post
 #
 # @param [Integer] :post_id, The ID of the post to delete
 post('/posts/:post_id/delete') do
@@ -69,7 +67,11 @@ post('/posts/:post_id/delete') do
 
     if (maybe_user_id != post_author)
         # Cannot delete a post unless the user made the post
-        puts "ERROR: User[#{maybe_user_id}] tried to delete post by User[#{post_owner}]"
+        error_message = "ERROR: User[#{maybe_user_id}] tried to delete post by User[#{post_owner}]"
+        puts(error_message)
+        flash[:notice] = error_message
+
+        redirect('/')
     end
 
     delete_post(post_id)

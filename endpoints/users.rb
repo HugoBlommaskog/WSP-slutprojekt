@@ -1,4 +1,4 @@
-require_relative('../models.rb')
+require_relative('../model.rb')
 
 include(Model)
 
@@ -14,8 +14,14 @@ end
 post('/users') do
     username = params[:username]
     password = params[:password]
-    
-    puts "LOG: Creating user with username '#{username}' and password '#{password}'"
+
+    if (user_exists_by_username(username))
+        # Cannot create a user with this username since it's taken
+        error_message = "ERROR: Failed to create user - user with username [#{username}] already exists"
+        puts(error_message)
+        flash[:notice] = error_message
+        redirect('/users/new')
+    end
 
     created_user = register(username, password)
 
@@ -23,9 +29,11 @@ post('/users') do
         # Successfully created a new user
         session[:user_id] = created_user["user_id"]
         session[:username] = created_user["username"]
+
+        puts("LOG: Created User[ID=#{created_user["user_id"]}, username=#{created_user["username"]}]")
     else
-        # Something went wrong
-        puts "ERROR: Failed to create user"
+        # Something went wrong (This shouldn't happen)
+        puts("ERROR: Failed to create user")
     end
 
     redirect('/')
@@ -50,16 +58,30 @@ post('/users/login') do
     username = params[:username]
     password = params[:password]
 
-    maybe_logged_in_user = login(username, password)
+    maybe_user_by_username = find_user_by_username(username)
 
-    if (maybe_logged_in_user != nil)
-        user = maybe_logged_in_user
-        session[:user_id] = user["user_id"]
-        session[:username] = user["username"]
-    else
-        # Something went wrong with the log-in
-        puts "ERROR: Failed to log in"
+    if (maybe_user_by_username == nil)
+        error_message = "ERROR: Failed to log in - No user exists with username [#{username}]"
+        puts(error_message)
+        flash[:notice] = error_message
+
+        redirect('/users/login')
     end
+
+    user = maybe_user_by_username
+
+    successful_login = login(user, password)
+
+    if (!successful_login)
+        error_message = "ERROR: Incorrect password [#{password}] for user [#{username}]"
+        puts(error_message)
+        flash[:notice] = error_message
+
+        redirect('/users/login')
+    end
+
+    session[:user_id] = user["user_id"]
+    session[:username] = user["username"]
 
     redirect('/')
 end
