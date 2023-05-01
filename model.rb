@@ -76,8 +76,7 @@ module Model
     #
     # @param [String] username, The username to search by
     #
-    # @return [Hash] A hash map representing the DB user entity,
-    # or nil if no user was found
+    # @return [Hash] A hash map representing the DB user entity, or nil if no user was found
     def find_user_by_username(username)
         users = get_db().execute("
             SELECT * FROM users
@@ -91,8 +90,7 @@ module Model
     #
     # @param [String] profile_name, The name of the new profile
     #
-    # @return [Hash] A hash map representing the newly created DB profile entity,
-    # or nil if the profile name is already taken
+    # @return [Hash] A hash map representing the newly created DB profile entity, or nil if the profile name is already taken
     def create_profile(profile_name)
         db = get_db()
 
@@ -133,8 +131,7 @@ module Model
     # @param [Integer] profile_id, The ID of the profile to look up
     # @param [Integer] maybe_user_id, The (potential) ID of the user doing the lookup
     #
-    # @return [Hash] A hash map representing the DB entity of the retrieved profile,
-    # or nil if no profile was found/available by the given ID
+    # @return [Hash] A hash map representing the DB entity of the retrieved profile, or nil if no profile was found/available by the given ID
     def get_profile(profile_id, maybe_user_id)
         if (is_valid_admin(maybe_user_id))
             # Find among ALL profiles, since a logged-in admin can see everything
